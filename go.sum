@@ -1,0 +1,4 @@
+github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
+github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
+github.com/kataras/hcaptcha v0.0.0-20200711031247-2927d4faf32f h1:ktcW6v946XnYiNU2taSVx79C5eDDQ8MxWepJ8S1Mz5A=
+github.com/kataras/hcaptcha v0.0.0-20200711031247-2927d4faf32f/go.mod h1:9FC7gVUVZcXkyq6vFY+JVGMrmw1xoe4nD41Whc+gSbo=
