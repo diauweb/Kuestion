@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+	<title>提问箱</title>
+</head>
+<body>
+<div id="page">
+	<header>
+		<p class="hg1"><a href="https://megakite.icu/index.html">megakite.icu</a></p>
+		<p class="hg2">The personal blog of <a href="/about.html" style="color: var(--color-3)"><i>@megakite</i></a>.</p>
+	</header>
+    <hr />
+	<div class="artc">
+        <form action="/sbmt" method="POST">
+            <textarea name="text" id="cntnt" rows="5" placeholder="想说什么就写在这里吧！"></textarea>
+            <div class="h-captcha" data-sitekey="1a32a1cf-370a-4b2d-9455-d2482862926c"></div>
+            <button type="submit" id="sbmt">发送提问</button>
+        </form>
+	</div>
+</div>
+</body>
+</html>

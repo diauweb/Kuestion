@@ -22,7 +22,7 @@ func main() {
 	}
 	client = hcaptcha.New(os.Getenv("HCAPTCHA_SECRET_KEY"))
 
-	http.HandleFunc("/boxsubmit", submit)
+	http.HandleFunc("/sbmt", submit)
 	// http.Handle("/", http.FileServer(http.Dir("./static")))
 
 	fmt.Printf("Listening on: localhost:%s\n", os.Getenv("PORT"))
@@ -44,16 +44,15 @@ func submit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.Form.Get("name")
 	text := r.Form.Get("text")
 
-	if name == "" || text == "" {
-		fmt.Fprintf(w, "One or more fields are empty in your request.")
+	if text == "" {
+		fmt.Fprintf(w, "The text field is empty in your request.")
 		w.WriteHeader(400)
 		return
 	}
 
-	err = postIssue(name, text)
+	err = postIssue(text)
 
 	if err != nil {
 		fmt.Fprintf(w, "Internal Server Error.")
@@ -67,10 +66,10 @@ func submit(w http.ResponseWriter, r *http.Request) {
 
 const issueApi = "https://api.github.com/repos/%s/issues"
 
-func postIssue(name string, body string) error {
+func postIssue(body string) error {
 	payload, err := json.Marshal(map[string]string{
-		"title": fmt.Sprintf("%s sent at %s", name, time.Now().Format("2006-01-02T15:04:05+0800")),
-		"body":  body,
+		"title": fmt.Sprintf("Bako sent at %s", time.Now()),
+		"body": body,
 	})
 
 	if err != nil {
