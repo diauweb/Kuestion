@@ -23,9 +23,13 @@ func main() {
 	client = hcaptcha.New(os.Getenv("HCAPTCHA_SECRET_KEY"))
 
 	http.HandleFunc("/sbmt", submit)
-	// http.Handle("/", http.FileServer(http.Dir("./static")))
 
-	fmt.Printf("Listening on: localhost:%s\n", os.Getenv("PORT"))
+	if os.Getenv("STANDALONE") == "true" {
+		log.Println("Standalone mode")
+		http.Handle("/", http.FileServer(http.Dir("./static")))
+	}
+
+	log.Printf("Listening on: localhost:%s\n", os.Getenv("PORT"))
 
 	_ = http.ListenAndServe("localhost:"+os.Getenv("PORT"), nil)
 }
@@ -69,7 +73,7 @@ const issueApi = "https://api.github.com/repos/%s/issues"
 func postIssue(body string) error {
 	payload, err := json.Marshal(map[string]string{
 		"title": fmt.Sprintf("Bako sent at %s", time.Now()),
-		"body": body,
+		"body":  body,
 	})
 
 	if err != nil {
