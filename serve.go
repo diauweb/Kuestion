@@ -1,19 +1,25 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
+	"github.com/google/go-github/v32/github"
 	"github.com/joho/godotenv"
 	"github.com/kataras/hcaptcha"
+	"golang.org/x/oauth2"
 )
 
 var client *hcaptcha.Client
+var gh *github.Client
+var ghctx = context.Background()
+
+var user, repo string
 
 func main() {
 	err := godotenv.Load()
@@ -22,7 +28,18 @@ func main() {
 	}
 	client = hcaptcha.New(os.Getenv("HCAPTCHA_SECRET_KEY"))
 
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv("GH_PAT")},
+	)
+	gh = github.NewClient(oauth2.NewClient(ghctx, ts))
+	rn := strings.Split(os.Getenv("GH_REPO"), "/")
+	user, repo = rn[0], rn[1]
+
+	FetchIssues()
+
 	http.HandleFunc("/sbmt", submit)
+	http.HandleFunc("/box", listing)
+	http.HandleFunc("/trigger", trigger)
 
 	if os.Getenv("STANDALONE") == "true" {
 		log.Println("Standalone mode")
@@ -68,32 +85,14 @@ func submit(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(303)
 }
 
-const issueApi = "https://api.github.com/repos/%s/issues"
-
 func postIssue(body string) error {
-	payload, err := json.Marshal(map[string]string{
-		"title": fmt.Sprintf("Bako sent at %s", time.Now()),
-		"body":  body,
-	})
 
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest(
-		"POST",
-		fmt.Sprintf(issueApi, os.Getenv("GH_REPO")),
-		bytes.NewBuffer(payload),
-	)
-
-	if err != nil {
-		return err
-	}
-
-	req.Header.Add("Authorization", "Bearer "+os.Getenv("GH_PAT"))
-	req.Header.Set("Content-Type", "application/json")
-
-	_, err = http.DefaultClient.Do(req)
+	msg := fmt.Sprintf("Bako sent at %s", time.Now().Format("2006-01-02 15:04:05 +0800"))
+	_, _, err := gh.Issues.Create(ghctx, user, repo,
+		&github.IssueRequest{
+			Title: &msg,
+			Body:  &body,
+		})
 
 	return err
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+	<title>提问箱</title>
+</head>
+<body>
+<div id="page">
+	<header>
+		<p class="hg2">Bako Risuto</p>
+	</header>
+    <hr />
+	<div class="artc">
+        {{ range $i, $x := . }}
+        {{ if gt (len $x.Comments) 0 }}
+        <div>
+            <p>
+                <em>Q:</em>
+                {{ $x.Issue.Body }}
+            </p>
+            <p>
+                <em>A:</em>
+                {{ (index $x.Comments 0).Body }}
+            </p>
+        </div>
+        {{ end }}
+        {{ else }}
+        <p>Nothing at this time yet.</p>
+        {{ end }}
+	</div>
+</div>
+</body>
+</html>
