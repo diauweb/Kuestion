@@ -1,0 +1,42 @@
+
+:root {
+	--color-1: #ebebeb;
+	--color-2: #d8d8d8;
+	--color-3: #808080;
+	--color-4: #404040;
+	--color-5: #101010;
+}
+
+body {
+	background-color: var(--color-1);
+	padding: 0 1rem;
+	font-family: 'IBM Plex Serif', 'Noto Serif SC', sans-serif;
+}
+
+.bkbox {
+    background-color: var(--color-2);
+    padding: 1rem;
+    margin: 2rem 1rem;
+}
+
+.bksect {
+    display: flex;
+    margin: .3rem -1rem;
+}
+
+.bksect .bktype {
+    background-color: var(--color-3);
+    color: var(--color-1);
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    font-weight: bold;
+    padding: .5rem;
+    flex-shrink: 0;
+    /* margin-top: -.5rem; */
+}
+
+.bksect .bkctx {
+    margin: 0 1rem;
+}
