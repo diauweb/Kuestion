@@ -3,6 +3,7 @@ module github.com/diauweb/kuestion
 go 1.14
 
 require (
+	github.com/gomarkdown/markdown v0.0.0-20200824053859-8c8b3816f167
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-github/v32 v32.1.0
 	github.com/joho/godotenv v1.3.0

@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     
     <script src="https://hcaptcha.com/1/api.js" async defer></script>
+    <link rel="stylesheet" href="/style.css">
 	<title>提问箱</title>
 </head>
 <body>
@@ -16,15 +17,15 @@
 	<div class="artc">
         {{ range $i, $x := . }}
         {{ if gt (len $x.Comments) 0 }}
-        <div>
-            <p>
-                <em>Q:</em>
-                {{ $x.Issue.Body }}
-            </p>
-            <p>
-                <em>A:</em>
-                {{ (index $x.Comments 0).Body }}
-            </p>
+        <div class="bkbox">
+            <div class="bksect">
+                <div class="bktype">Q</div>
+                <div class="bkctx"><p>{{ $x.Issue.Body }}</p></div>
+            </div>
+            <div class="bksect">
+                <div class="bktype">A</div>
+                <div class="bkctx">{{ (index $x.Comments 0).Body | renderAns }}</div>
+            </div>
         </div>
         {{ end }}
         {{ else }}

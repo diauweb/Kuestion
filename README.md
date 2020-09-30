@@ -17,9 +17,12 @@ SUCCESS_CALLBACK=/
 STANDALONE=false
 # Secret to trigger webhook
 WEBHOOK_SECRET=1145141919810893
+# Render **Answers** as Markdown
+# Questions are always left as-is due to potential xss issues
+BOX_RENDER_MD=true
 ```
 
 ## Routes
 - `/sbmt` post to submit box
-- `/box` render `tmpl/bako.tmpl`, show issues labeled with `publish`
+- `/box` render `tmpl/bako.gohtml`, show issues labeled with `publish`
 - `/trigger` webhook endpoint

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"text/template"
+
+	"github.com/gomarkdown/markdown"
 
 	"github.com/google/go-github/v32/github"
 )
@@ -15,7 +17,17 @@ type IssueBundle struct {
 	Comments []*github.IssueComment
 }
 
-var listTmpl = template.Must(template.ParseFiles("tmpl/bakos.tmpl"))
+func renderText(raw string) interface{} {
+	if os.Getenv("BOX_RENDER_MD") == "true" {
+		return template.HTML(markdown.ToHTML([]byte(raw), nil, nil))
+	}
+	return raw
+}
+
+var listTmpl = template.Must(
+	template.New("").
+		Funcs(template.FuncMap{"renderAns": renderText}).
+		ParseFiles("tmpl/bakos.gohtml"))
 var issues map[int]IssueBundle
 
 func FetchIssues() {
@@ -39,7 +51,7 @@ func FetchIssues() {
 }
 
 func listing(w http.ResponseWriter, r *http.Request) {
-	err := listTmpl.Execute(w, issues)
+	err := listTmpl.ExecuteTemplate(w, "bakos.gohtml", issues)
 	if err != nil {
 		log.Println(err)
 	}
