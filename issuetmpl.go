@@ -35,12 +35,12 @@ func FetchIssues() {
 
 	rIssues, _, _ := gh.Issues.ListByRepo(ghctx, user, repo,
 		&github.IssueListByRepoOptions{
+			State:  "all",
 			Labels: []string{"publish"},
 		})
 
 	issues = make(map[int]IssueBundle)
 	for _, v := range rIssues {
-
 		comment, _, _ := gh.Issues.ListComments(ghctx, user, repo, *v.Number, nil)
 
 		issues[*v.Number] = IssueBundle{
@@ -89,5 +89,4 @@ func trigger(w http.ResponseWriter, r *http.Request) {
 			log.Println("Issue", *event.Issue.Number, "removed")
 		}
 	}
-
 }

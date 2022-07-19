@@ -86,8 +86,7 @@ func submit(w http.ResponseWriter, r *http.Request) {
 }
 
 func postIssue(body string) error {
-
-	msg := fmt.Sprintf("Bako sent at %s", time.Now().Format("2006-01-02 15:04:05 +0800"))
+	msg := fmt.Sprintf("Bako sent at %s", time.Now().Format("2006-01-02 15:04:05"))
 	_, _, err := gh.Issues.Create(ghctx, user, repo,
 		&github.IssueRequest{
 			Title: &msg,
